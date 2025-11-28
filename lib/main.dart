@@ -35,9 +35,7 @@ class _HomePageState extends State<HomePage> {
   late Future<Map<String, dynamic>> _dataFuture;
 
   void _incrementLikesCounter() {
-    setState(() {
-      _likesCounter++;
-    });
+    _likesCounter++;
   }
 
   Future<Map<String, dynamic>> _fetchImageData() async {
@@ -126,11 +124,20 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FloatingActionButton(
-              onPressed: _incrementLikesCounter,
+              onPressed: () {
+                setState(() {
+                  _incrementLikesCounter();
+                  _getNewData();
+                });
+              },
               child: Icon(Icons.thumb_up),
             ),
             FloatingActionButton(
-              onPressed: () {}, // TODO implement dislike functionality
+              onPressed: () {
+                setState(() {
+                  _getNewData();
+                });
+              },
               child: Icon(Icons.thumb_down),
             ),
           ],
