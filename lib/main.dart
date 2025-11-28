@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const CatinderApp());
@@ -29,10 +32,60 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _likesCounter = 0;
 
+  late Future<Map<String, dynamic>> _dataFuture;
+
   void _incrementLikesCounter() {
     setState(() {
       _likesCounter++;
     });
+  }
+
+  Future<Map<String, dynamic>> _fetchImageData() async {
+    try {
+      final searchResponse = await http.get(
+        Uri.https("api.thecatapi.com", "/v1/images/search", {
+          "has_breeds": "1",
+        }),
+      );
+
+      if (searchResponse.statusCode != 200) {
+        throw Exception(
+          "Failed to find image. Status code: ${searchResponse.statusCode}",
+        );
+      }
+
+      final List<dynamic> searchData = jsonDecode(searchResponse.body);
+
+      if (searchData.isEmpty) {
+        throw Exception("No images found.");
+      }
+
+      final String id = searchData[0]['id'];
+
+      final getResponse = await http.get(
+        Uri.https("api.thecatapi.com", "/v1/images/$id"),
+      );
+
+      if (getResponse.statusCode != 200) {
+        throw Exception(
+          "Failed to get image data. Status code: ${getResponse.statusCode}",
+        );
+      }
+
+      return jsonDecode(getResponse.body) as Map<String, dynamic>;
+    } catch (e) {
+      throw Exception("Did not manage to fetch data. $e");
+    }
+  }
+
+  void _getNewData() {
+    _dataFuture = _fetchImageData();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getNewData();
   }
 
   @override
@@ -47,7 +100,28 @@ class _HomePageState extends State<HomePage> {
             Text(" $_likesCounter"),
           ], // TODO find relevant icon
         ),
-        Card(child: Text("Home Page")),
+        Card(
+          child: FutureBuilder(
+            future: _dataFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              }
+              if (snapshot.hasError) {
+                return Text("Error: ${snapshot.error}");
+              }
+              if (snapshot.hasData) {
+                return Stack(
+                  children: [
+                    Image.network(snapshot.data!['url']),
+                    Text(snapshot.data!['breeds'][0]['name']),
+                  ],
+                );
+              }
+              throw Exception("Unexpected state in FutureBuilder");
+            },
+          ),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
