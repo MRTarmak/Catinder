@@ -13,7 +13,7 @@ class CatinderApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Catinder',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
@@ -94,32 +94,11 @@ class _HomePageState extends State<HomePage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.thumb_up),
+            Icon(Icons.favorite, color: Colors.red),
             Text(" $_likesCounter"),
-          ], // TODO find relevant icon
+          ],
         ),
-        Card(
-          child: FutureBuilder(
-            future: _dataFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              }
-              if (snapshot.hasError) {
-                return Text("Error: ${snapshot.error}");
-              }
-              if (snapshot.hasData) {
-                return Stack(
-                  children: [
-                    Image.network(snapshot.data!['url']),
-                    Text(snapshot.data!['breeds'][0]['name']),
-                  ],
-                );
-              }
-              throw Exception("Unexpected state in FutureBuilder");
-            },
-          ),
-        ),
+        CatCard(dataFuture: _dataFuture),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -143,6 +122,96 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ],
+    );
+  }
+}
+
+class CatCard extends StatelessWidget {
+  final Future<Map<String, dynamic>> _dataFuture;
+
+  const CatCard({super.key, required Future<Map<String, dynamic>> dataFuture})
+    : _dataFuture = dataFuture;
+
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 3 / 4,
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 16.0,
+          right: 16.0,
+          top: 8.0,
+          bottom: 8.0,
+        ),
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          child: FutureBuilder(
+            future: _dataFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+              if (snapshot.hasError) {
+                return Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      "Error: ${snapshot.error}",
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              }
+              if (snapshot.hasData) {
+                return Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Image.network(
+                        snapshot.data!['url'],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        height: 120,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: [Colors.black, Colors.transparent],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: 16,
+                      bottom: 16,
+                      child: Text(
+                        snapshot.data!['breeds'][0]['name'],
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }
+              throw Exception("Unexpected state in FutureBuilder");
+            },
+          ),
+        ),
+      ),
     );
   }
 }
@@ -178,7 +247,7 @@ class _IndexedStackScreenState extends State<IndexedStackScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Breeds'),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Theme.of(context).colorScheme.primary,
         onTap: _onItemTapped,
       ),
     );
