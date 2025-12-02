@@ -150,7 +150,8 @@ class CatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio( // TODO adjust card size for different screen sizes
+    return AspectRatio(
+      // TODO adjust card size for different screen sizes
       aspectRatio: 3 / 4,
       child: Padding(
         padding: EdgeInsets.only(
@@ -160,7 +161,6 @@ class CatCard extends StatelessWidget {
           bottom: 8.0,
         ),
         child: Card(
-          // TODO new screen on click
           clipBehavior: Clip.antiAlias,
           child: FutureBuilder(
             future: _dataFuture,
@@ -186,69 +186,82 @@ class CatCard extends StatelessWidget {
                 );
               }
               if (snapshot.hasData) {
-                return Stack(
-                  children: [
-                    Positioned.fill(
-                      child: Image.network(
-                        snapshot.data!['url'],
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Center(
-                            child: SizedBox(
-                              width: 40,
-                              height: 40,
-                              child: CircularProgressIndicator(
-                                value:
-                                    loadingProgress.expectedTotalBytes != null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
-                            ),
-                          );
-                        },
-                        errorBuilder: (context, error, stackTrace) {
-                          return Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: Text(
-                                "Error: image failed to load.",
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          );
-                        },
+                final image = Image.network(
+                  snapshot.data!['url'],
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                              : null,
+                        ),
+                      ),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    return Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Text(
+                          "Error: image failed to load.",
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    );
+                  },
+                );
+                final breedName = snapshot.data!['breeds'][0]['name'];
+                final description = snapshot.data!['breeds'][0]['description'];
+
+                return GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailsScreen(
+                        image: image,
+                        breedName: breedName,
+                        description: description,
                       ),
                     ),
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                        height: 120,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                            colors: [Colors.black, Colors.transparent],
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned.fill(child: image),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 120,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [Colors.black, Colors.transparent],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      left: 16,
-                      bottom: 16,
-                      child: Text(
-                        snapshot.data!['breeds'][0]['name'],
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+                      Positioned(
+                        left: 16,
+                        bottom: 16,
+                        child: Text(
+                          breedName,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               }
               throw Exception("Unexpected state in FutureBuilder");
@@ -271,7 +284,7 @@ class _IndexedStackScreenState extends State<IndexedStackScreen> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     HomePage(),
-    Text('Breeds List Page'),
+    Text('Breeds List Page'), // TODO Breeds List Page
   ];
 
   void _onItemTapped(int index) {
@@ -306,6 +319,100 @@ class _IndexedStackScreenState extends State<IndexedStackScreen> {
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).colorScheme.primary,
         onTap: _onItemTapped,
+      ),
+    );
+  }
+}
+
+class DetailsScreen extends StatelessWidget {
+  final Image _image;
+  final String _breedName;
+  final String _description;
+
+  const DetailsScreen({
+    super.key,
+    required Image image,
+    required String breedName,
+    required String description,
+  }) : _image = image,
+       _breedName = breedName,
+       _description = description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Center(
+          child: Text(
+            "Catinder",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        automaticallyImplyLeading: false,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AspectRatio(
+            aspectRatio: 3 / 4,
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: 16.0,
+                right: 16.0,
+                top: 8.0,
+                bottom: 8.0,
+              ),
+              child: GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: Card(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          flex: 3,
+                          child: ClipRRect(
+                            borderRadius: BorderRadiusGeometry.circular(16),
+                            child: _image,
+                          ),
+                        ),
+                        Flexible(
+                          child: Text(
+                            _breedName,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          flex: 2,
+                          child: Text(
+                            _description,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          FloatingActionButton(
+            child: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
       ),
     );
   }
