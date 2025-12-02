@@ -80,6 +80,19 @@ class _HomePageState extends State<HomePage> {
     _dataFuture = _fetchImageData();
   }
 
+  void _like() {
+    setState(() {
+      _incrementLikesCounter();
+      _getNewData();
+    });
+  }
+
+  void _dislike() {
+    setState(() {
+      _getNewData();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -98,25 +111,27 @@ class _HomePageState extends State<HomePage> {
             Text(" $_likesCounter"),
           ],
         ),
-        CatCard(dataFuture: _dataFuture),
+        Dismissible(
+          key: UniqueKey(),
+          direction: DismissDirection.horizontal,
+          onDismissed: (direction) {
+            if (direction == DismissDirection.startToEnd) {
+              _dislike();
+            } else {
+              _like();
+            }
+          },
+          child: CatCard(dataFuture: _dataFuture),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FloatingActionButton(
-              onPressed: () {
-                setState(() {
-                  _incrementLikesCounter();
-                  _getNewData();
-                });
-              },
+              onPressed: () => _like(),
               child: Icon(Icons.thumb_up),
             ),
             FloatingActionButton(
-              onPressed: () {
-                setState(() {
-                  _getNewData();
-                });
-              },
+              onPressed: () => _dislike(),
               child: Icon(Icons.thumb_down),
             ),
           ],
@@ -169,6 +184,7 @@ class CatCard extends StatelessWidget {
                 );
               }
               if (snapshot.hasData) {
+                print(snapshot.data!['url']);
                 return Stack(
                   children: [
                     Positioned.fill(
