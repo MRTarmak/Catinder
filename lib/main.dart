@@ -130,6 +130,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () => _like(),
               child: Icon(Icons.thumb_up),
             ),
+            SizedBox(width: 50),
             FloatingActionButton(
               onPressed: () => _dislike(),
               child: Icon(Icons.thumb_down),
@@ -149,7 +150,7 @@ class CatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
+    return AspectRatio( // TODO adjust card size for different screen sizes
       aspectRatio: 3 / 4,
       child: Padding(
         padding: EdgeInsets.only(
@@ -159,6 +160,7 @@ class CatCard extends StatelessWidget {
           bottom: 8.0,
         ),
         child: Card(
+          // TODO new screen on click
           clipBehavior: Clip.antiAlias,
           child: FutureBuilder(
             future: _dataFuture,
@@ -184,13 +186,39 @@ class CatCard extends StatelessWidget {
                 );
               }
               if (snapshot.hasData) {
-                print(snapshot.data!['url']);
                 return Stack(
                   children: [
                     Positioned.fill(
                       child: Image.network(
                         snapshot.data!['url'],
                         fit: BoxFit.cover,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: SizedBox(
+                              width: 40,
+                              height: 40,
+                              child: CircularProgressIndicator(
+                                value:
+                                    loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            ),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Text(
+                                "Error: image failed to load.",
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                     Positioned(
@@ -255,7 +283,20 @@ class _IndexedStackScreenState extends State<IndexedStackScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Catinder")),
+      appBar: AppBar(
+        title: Center(
+          child: Text(
+            "Catinder",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
       body: IndexedStack(index: _selectedIndex, children: _widgetOptions),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
