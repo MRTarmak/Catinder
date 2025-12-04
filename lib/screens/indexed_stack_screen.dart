@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'breed_list_page.dart';
 import 'home_page.dart';
 
 class IndexedStackScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class _IndexedStackScreenState extends State<IndexedStackScreen> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     HomePage(),
-    Text('Breeds List Page'), // TODO Breeds List Page
+    BreedListPage(),
   ];
 
   void _onItemTapped(int index) {
