@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import '../screens/details_screen.dart';
 
 class CatCard extends StatelessWidget {
-  final Future<Map<String, dynamic>> _dataFuture;
+  final Future<Map<String, dynamic>> imageDataFuture;
 
-  const CatCard({super.key, required Future<Map<String, dynamic>> dataFuture})
-    : _dataFuture = dataFuture;
+  const CatCard({super.key, required this.imageDataFuture});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class CatCard extends StatelessWidget {
         child: Card(
           clipBehavior: Clip.antiAlias,
           child: FutureBuilder(
-            future: _dataFuture,
+            future: imageDataFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
@@ -49,29 +48,21 @@ class CatCard extends StatelessWidget {
                 final image = Image.network(
                   snapshot.data!['url'],
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Center(
+                    child: Icon(
+                      Icons.broken_image,
+                      size: 48,
+                      color: Colors.grey,
+                    ),
+                  ),
                   loadingBuilder: (context, child, loadingProgress) {
                     if (loadingProgress == null) return child;
                     return Center(
-                      child: SizedBox(
-                        width: 40,
-                        height: 40,
-                        child: CircularProgressIndicator(
-                          value: loadingProgress.expectedTotalBytes != null
-                              ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                              : null,
-                        ),
-                      ),
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) {
-                    return Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Text(
-                          "Error: image failed to load.",
-                          textAlign: TextAlign.center,
-                        ),
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                            : null,
                       ),
                     );
                   },

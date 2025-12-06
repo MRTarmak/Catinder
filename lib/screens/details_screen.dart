@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 
 class DetailsScreen extends StatelessWidget {
-  final Image _image;
-  final String _breedName;
-  final String _description;
+  final Image image;
+  final String breedName;
+  final String description;
 
   const DetailsScreen({
     super.key,
-    required Image image,
-    required String breedName,
-    required String description,
-  }) : _image = image,
-       _breedName = breedName,
-       _description = description;
+    required this.image,
+    required this.breedName,
+    required this.description,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -56,12 +54,12 @@ class DetailsScreen extends StatelessWidget {
                           flex: 3,
                           child: ClipRRect(
                             borderRadius: BorderRadiusGeometry.circular(16),
-                            child: _image,
+                            child: image,
                           ),
                         ),
                         Flexible(
                           child: Text(
-                            _breedName,
+                            breedName,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 24,
@@ -72,7 +70,7 @@ class DetailsScreen extends StatelessWidget {
                         Flexible(
                           flex: 2,
                           child: Text(
-                            _description,
+                            description,
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 16),
                           ),

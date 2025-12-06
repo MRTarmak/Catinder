@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:catinder/utils/fetch_image_data.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,27 +16,27 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _likesCounter = 0;
 
-  late Future<Map<String, dynamic>> _dataFuture;
+  late Future<Map<String, dynamic>> _imageDataFuture;
 
   void _incrementLikesCounter() {
     _likesCounter++;
   }
 
-  Future<Map<String, dynamic>> _fetchImageData() async {
+  Future<String> _fetchRandomImageId() async {
     try {
-      final searchResponse = await http.get(
+      final response = await http.get(
         Uri.https("api.thecatapi.com", "/v1/images/search", {
           "has_breeds": "1",
         }),
       );
 
-      if (searchResponse.statusCode != 200) {
+      if (response.statusCode != 200) {
         throw Exception(
-          "Failed to find image. Status code: ${searchResponse.statusCode}",
+          "Failed to find image. Status code: ${response.statusCode}",
         );
       }
 
-      final List<dynamic> searchData = jsonDecode(searchResponse.body);
+      final List<dynamic> searchData = jsonDecode(response.body);
 
       if (searchData.isEmpty) {
         throw Exception("No images found.");
@@ -43,43 +44,34 @@ class _HomePageState extends State<HomePage> {
 
       final String id = searchData[0]['id'];
 
-      final getResponse = await http.get(
-        Uri.https("api.thecatapi.com", "/v1/images/$id"),
-      );
-
-      if (getResponse.statusCode != 200) {
-        throw Exception(
-          "Failed to get image data. Status code: ${getResponse.statusCode}",
-        );
-      }
-
-      return jsonDecode(getResponse.body) as Map<String, dynamic>;
+      return id;
     } catch (e) {
       throw Exception("Did not manage to fetch data. $e");
     }
   }
 
-  void _getNewData() {
-    _dataFuture = _fetchImageData();
+  void _getNewImageData() async {
+    final String imageId = await _fetchRandomImageId();
+    _imageDataFuture = fetchImageData(imageId);
   }
 
   void _like() {
     setState(() {
       _incrementLikesCounter();
-      _getNewData();
+      _getNewImageData();
     });
   }
 
   void _dislike() {
     setState(() {
-      _getNewData();
+      _getNewImageData();
     });
   }
 
   @override
   void initState() {
     super.initState();
-    _getNewData();
+    _getNewImageData();
   }
 
   @override
@@ -104,7 +96,7 @@ class _HomePageState extends State<HomePage> {
               _like();
             }
           },
-          child: CatCard(dataFuture: _dataFuture),
+          child: CatCard(imageDataFuture: _imageDataFuture),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
