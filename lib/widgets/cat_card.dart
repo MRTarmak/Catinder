@@ -12,7 +12,6 @@ class CatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      // TODO adjust card size for different screen sizes
       aspectRatio: 3 / 4,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
