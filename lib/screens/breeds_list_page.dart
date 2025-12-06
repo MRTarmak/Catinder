@@ -1,31 +1,32 @@
 import 'dart:convert';
 
+import 'package:catinder/widgets/breed_card.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class BreedListPage extends StatefulWidget {
-  const BreedListPage({super.key});
+class BreedsListPage extends StatefulWidget {
+  const BreedsListPage({super.key});
 
   @override
-  State<BreedListPage> createState() => _BreedListPageState();
+  State<BreedsListPage> createState() => _BreedsListPageState();
 }
 
-class _BreedListPageState extends State<BreedListPage> {
+class _BreedsListPageState extends State<BreedsListPage> {
   late final Future<List<dynamic>> _breedsDataFuture;
 
   Future<List<dynamic>> _fetchBreedsData() async {
     try {
-      final searchResponse = await http.get(
+      final response = await http.get(
         Uri.https("api.thecatapi.com", "/v1/breeds"),
       );
 
-      if (searchResponse.statusCode != 200) {
+      if (response.statusCode != 200) {
         throw Exception(
-          "Failed to find breeds data. Status code: ${searchResponse.statusCode}",
+          "Failed to find breeds data. Status code: ${response.statusCode}",
         );
       }
 
-      final List<dynamic> breedsData = jsonDecode(searchResponse.body);
+      final List<dynamic> breedsData = jsonDecode(response.body);
 
       return breedsData;
     } catch (e) {
@@ -66,32 +67,18 @@ class _BreedListPageState extends State<BreedListPage> {
             );
           }
           if (snapshot.hasData) {
-            return ListView.builder(
+            return GridView.builder(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 3 / 4,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+              ),
+              itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                return Row(
-                  children: [
-                    Expanded(
-                      child: AspectRatio(
-                        aspectRatio: 3 / 4,
-                        child: Card(
-                          child: Text(snapshot.data![index * 2]['name']),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: AspectRatio(
-                        aspectRatio: 3 / 4,
-                        child: snapshot.data!.length > index * 2 + 1
-                            ? Card(
-                                child: Text(
-                                  snapshot.data![index * 2 + 1]['name'],
-                                ),
-                              )
-                            : SizedBox(),
-                      ),
-                    ),
-                  ],
-                );
+                final breedData = snapshot.data![index];
+                return BreedCard(breedData: breedData);
               },
             );
           }

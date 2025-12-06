@@ -13,12 +13,7 @@ class CatCard extends StatelessWidget {
       // TODO adjust card size for different screen sizes
       aspectRatio: 3 / 4,
       child: Padding(
-        padding: EdgeInsets.only(
-          left: 16.0,
-          right: 16.0,
-          top: 8.0,
-          bottom: 8.0,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Card(
           clipBehavior: Clip.antiAlias,
           child: FutureBuilder(
@@ -102,6 +97,7 @@ class CatCard extends StatelessWidget {
                       Positioned(
                         left: 16,
                         bottom: 16,
+                        right: 16,
                         child: Text(
                           breedName,
                           style: TextStyle(

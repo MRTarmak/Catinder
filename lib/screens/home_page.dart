@@ -50,9 +50,10 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _getNewImageData() async {
-    final String imageId = await _fetchRandomImageId();
-    _imageDataFuture = fetchImageData(imageId);
+  void _getNewImageData() {
+    _imageDataFuture = _fetchRandomImageId().then((imageId) {
+      return fetchImageData(imageId);
+    });
   }
 
   void _like() {

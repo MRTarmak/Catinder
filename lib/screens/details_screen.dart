@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 
 class DetailsScreen extends StatelessWidget {
-  final Image image;
+  final Image? image;
   final String breedName;
   final String description;
 
+  final String? weight;
+  final String? lifespan;
+  final String? temperament;
+
   const DetailsScreen({
     super.key,
-    required this.image,
+    this.image,
     required this.breedName,
     required this.description,
+    this.weight,
+    this.lifespan,
+    this.temperament,
   });
 
   @override
@@ -47,18 +54,17 @@ class DetailsScreen extends StatelessWidget {
                 child: Card(
                   child: Padding(
                     padding: EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          flex: 3,
-                          child: ClipRRect(
-                            borderRadius: BorderRadiusGeometry.circular(16),
-                            child: image,
-                          ),
-                        ),
-                        Flexible(
-                          child: Text(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (image != null)
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: image!,
+                            ),
+                          SizedBox(height: 12),
+                          Text(
                             breedName,
                             textAlign: TextAlign.center,
                             style: TextStyle(
@@ -66,16 +72,33 @@ class DetailsScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: Text(
+                          SizedBox(height: 12),
+                          Text(
                             description,
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 16),
                           ),
-                        ),
-                      ],
+                          SizedBox(height: 12),
+                          if (weight != null)
+                            Text(
+                              "Weight: $weight kg",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          if (lifespan != null)
+                            Text(
+                              "Lifespan: $lifespan years",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          if (temperament != null)
+                            Text(
+                              "Temperament: $temperament",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 16),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
