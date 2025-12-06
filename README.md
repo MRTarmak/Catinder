@@ -1,16 +1,52 @@
-# catinder
+# Сatinder
 
-A new Flutter project.
+Catinder — это мобильное Flutter-приложение, в котором пользователь свайпает фотографии котиков, ставит лайки и открывает для себя новые породы котов.
+Источник данных — TheCatAPI.
 
-## Getting Started
+## Функциональность
 
-This project is a starting point for a Flutter application.
+* Получение случайных изображений с TheCatAPI;
 
-A few resources to get you started if this is your first Flutter project:
+* Свайп карточек котиков влево/вправо (лайк/дизлайк);
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+* Счётчик лайков в реальном времени;
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* Описание котика при нажатии на карточку;
+
+* Страница со списком пород, где можно посмотреть их подробные карточки;
+
+* Подробная карточка породы:
+
+    * имя породы;
+
+    * описание;
+
+    * несколько фактов о породе (вес, продолжительность жизни, темперамент);
+
+* Минималистичная иконка
+
+## Скриншоты приложения
+
+* Главный экран с карточками котиков
+
+![main_screen.png](assets/readme/main_screen.png)
+
+* Экран с описанием котика
+
+![description.png](assets/readme/description.png)
+
+* Страница со списком пород
+
+![breeds_page.png](assets/readme/breeds_page.png)
+
+* Описание породы
+
+![breed_description.png](assets/readme/breed_description.png)
+
+* Описание породы (проскроленное)
+
+![breed_description_scrolled.png](assets/readme/breed_description_scrolled.png)
+
+## Установка
+
+Ссылка на актуальный apk файл: [build/app/outputs/flutter-apk/app-release.apk](build/app/outputs/flutter-apk/app-release.apk)
