@@ -43,12 +43,7 @@ class DetailsScreen extends StatelessWidget {
           AspectRatio(
             aspectRatio: 3 / 4,
             child: Padding(
-              padding: EdgeInsets.only(
-                left: 16.0,
-                right: 16.0,
-                top: 8.0,
-                bottom: 8.0,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: GestureDetector(
                 onTap: () => Navigator.pop(context),
                 child: Card(

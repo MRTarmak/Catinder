@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+
 import '../screens/details_screen.dart';
 import '../utils/fetch_image_data.dart';
 
 class BreedCard extends StatelessWidget {
   final Map<String, dynamic> breedData;
 
-  const BreedCard({super.key, required this.breedData});
+  final ValueChanged<Object?>? onError;
+
+  const BreedCard({super.key, required this.breedData, this.onError});
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +38,10 @@ class BreedCard extends StatelessWidget {
                 ),
               );
             } else if (snapshot.hasError) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                onError?.call(snapshot.error);
+              });
+
               imageWidget = Center(
                 child: Icon(Icons.broken_image, size: 48, color: Colors.grey),
               );

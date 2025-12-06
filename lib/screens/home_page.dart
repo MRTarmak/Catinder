@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:catinder/utils/dialogs.dart';
 import 'package:catinder/utils/fetch_image_data.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -17,6 +18,8 @@ class _HomePageState extends State<HomePage> {
   int _likesCounter = 0;
 
   late Future<Map<String, dynamic>> _imageDataFuture;
+
+  bool _errorDialogShown = false;
 
   void _incrementLikesCounter() {
     _likesCounter++;
@@ -69,6 +72,16 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _tryShowErrorDialog(BuildContext context, Object error) {
+    if (_errorDialogShown) return;
+
+    _errorDialogShown = true;
+
+    showErrorDialog(context, error.toString()).then((_) {
+      _errorDialogShown = false;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -97,7 +110,11 @@ class _HomePageState extends State<HomePage> {
               _like();
             }
           },
-          child: CatCard(imageDataFuture: _imageDataFuture),
+          child: CatCard(
+            imageDataFuture: _imageDataFuture,
+            onError: (err) =>
+                _tryShowErrorDialog(context, err ?? 'Unknown error'),
+          ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

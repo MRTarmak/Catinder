@@ -5,7 +5,9 @@ import '../screens/details_screen.dart';
 class CatCard extends StatelessWidget {
   final Future<Map<String, dynamic>> imageDataFuture;
 
-  const CatCard({super.key, required this.imageDataFuture});
+  final ValueChanged<Object?>? onError;
+
+  const CatCard({super.key, required this.imageDataFuture, this.onError});
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +31,15 @@ class CatCard extends StatelessWidget {
                 );
               }
               if (snapshot.hasError) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  onError?.call(snapshot.error);
+                });
+
                 return Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text(
-                      "Error: ${snapshot.error}",
-                      textAlign: TextAlign.center,
-                    ),
+                  child: Icon(
+                    Icons.error_outline,
+                    size: 48,
+                    color: Colors.grey,
                   ),
                 );
               }

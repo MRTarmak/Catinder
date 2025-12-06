@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:catinder/utils/dialogs.dart';
 import 'package:catinder/widgets/breed_card.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +14,8 @@ class BreedsListPage extends StatefulWidget {
 
 class _BreedsListPageState extends State<BreedsListPage> {
   late final Future<List<dynamic>> _breedsDataFuture;
+
+  bool _errorDialogShown = false;
 
   Future<List<dynamic>> _fetchBreedsData() async {
     try {
@@ -32,6 +35,16 @@ class _BreedsListPageState extends State<BreedsListPage> {
     } catch (e) {
       throw Exception("Did not manage to fetch data. $e");
     }
+  }
+
+  void _tryShowErrorDialog(BuildContext context, Object error) {
+    if (_errorDialogShown) return;
+
+    _errorDialogShown = true;
+
+    showErrorDialog(context, error.toString()).then((_) {
+      _errorDialogShown = false;
+    });
   }
 
   @override
@@ -56,14 +69,12 @@ class _BreedsListPageState extends State<BreedsListPage> {
             );
           }
           if (snapshot.hasError) {
-            return Center(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  "Error: ${snapshot.error}",
-                  textAlign: TextAlign.center,
-                ),
-              ),
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _tryShowErrorDialog(context, snapshot.error ?? 'Unknown error');
+            });
+
+            return const Center(
+              child: Icon(Icons.error_outline, size: 48, color: Colors.grey),
             );
           }
           if (snapshot.hasData) {
@@ -78,11 +89,15 @@ class _BreedsListPageState extends State<BreedsListPage> {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final breedData = snapshot.data![index];
-                return BreedCard(breedData: breedData);
+                return BreedCard(
+                  breedData: breedData,
+                  onError: (err) =>
+                      _tryShowErrorDialog(context, err ?? 'Unknown error'),
+                );
               },
             );
           }
-          throw Exception("Unexpected state in FutureBuilder");
+          return const SizedBox.shrink();
         },
       ),
     );
