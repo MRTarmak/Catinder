@@ -49,4 +49,4 @@ Catinder — это мобильное Flutter-приложение, в кото
 
 ## Установка
 
-Ссылка на актуальный apk файл: [build/app/outputs/flutter-apk/app-release.apk](build/app/outputs/flutter-apk/app-release.apk)
+Ссылка на актуальный apk файл: [app-release.apk](app-release.apk)
