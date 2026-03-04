@@ -59,59 +59,66 @@ class DetailsScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          AspectRatio(
-            aspectRatio: 3 / 4,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (image != null)
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(16),
-                              child: image!,
-                            ),
-                          SizedBox(height: 12),
-                          Text(
-                            breedName,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
+          Expanded(
+            child: Center(
+              child: AspectRatio(
+                aspectRatio: 3 / 4,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ),
+                  child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Card(
+                      child: Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (image != null)
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(16),
+                                  child: image!,
+                                ),
+                              SizedBox(height: 12),
+                              Text(
+                                breedName,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 12),
+                              Text(
+                                description,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              SizedBox(height: 12),
+                              if (weight != null)
+                                Text(
+                                  'Weight: $weight kg',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              if (lifespan != null)
+                                Text(
+                                  'Lifespan: $lifespan years',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              if (temperament != null)
+                                Text(
+                                  'Temperament: $temperament',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                            ],
                           ),
-                          SizedBox(height: 12),
-                          Text(
-                            description,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          SizedBox(height: 12),
-                          if (weight != null)
-                            Text(
-                              'Weight: $weight kg',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          if (lifespan != null)
-                            Text(
-                              'Lifespan: $lifespan years',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          if (temperament != null)
-                            Text(
-                              'Temperament: $temperament',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16),
-                            ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
@@ -120,9 +127,11 @@ class DetailsScreen extends StatelessWidget {
             ),
           ),
           FloatingActionButton(
+            heroTag: 'back',
             child: Icon(Icons.arrow_back),
             onPressed: () => Navigator.pop(context),
           ),
+          SizedBox(height: 12),
         ],
       ),
     );

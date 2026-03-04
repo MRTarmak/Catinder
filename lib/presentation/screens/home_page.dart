@@ -105,11 +105,13 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FloatingActionButton(
+              heroTag: 'like',
               onPressed: () => _state.like(),
               child: Icon(Icons.thumb_up),
             ),
             SizedBox(width: 50),
             FloatingActionButton(
+              heroTag: 'dislike',
               onPressed: () => _state.dislike(),
               child: Icon(Icons.thumb_down),
             ),

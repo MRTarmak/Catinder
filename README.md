@@ -5,6 +5,10 @@ Catinder — это мобильное Flutter-приложение, в кото
 
 ## Функциональность
 
+* Онбординг при первом входе в приложение;
+
+* Возможность регистрации и входа в аккаунт;
+
 * Получение случайных изображений с TheCatAPI;
 
 * Свайп карточек котиков влево/вправо (лайк/дизлайк);
@@ -23,9 +27,37 @@ Catinder — это мобильное Flutter-приложение, в кото
 
     * несколько фактов о породе (вес, продолжительность жизни, темперамент);
 
-* Минималистичная иконка
+* Минималистичная иконка;
+
+* Чистые архитектура и код;
+
+* Тесты и CI/CD
+
+## Демонстрация
+
+![demo.gif](assets/readme/demo.gif)
 
 ## Скриншоты приложения
+
+* Онбординг (Страница 1)
+
+![onboarding_page_1.png](assets/readme/onboarding_page_1.png)
+
+* Онбординг (Страница 2)
+
+![onboarding_page_2.png](assets/readme/onboarding_page_2.png)
+
+* Онбординг (Страница 3)
+
+![onboarding_page_3.png](assets/readme/onboarding_page_3.png)
+
+* Вход
+
+![log_in.png](assets/readme/log_in.png)
+
+* Регистрация
+
+![sign_up.png](assets/readme/sign_up.png)
 
 * Главный экран с карточками котиков
 
@@ -49,4 +81,4 @@ Catinder — это мобильное Flutter-приложение, в кото
 
 ## Установка
 
-Ссылка на актуальный apk файл: [app-release.apk](app-release.apk)
+Ссылка на актуальный apk файл: [artifacts/app-release.apk](app-release.apk)

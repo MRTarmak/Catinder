@@ -61,6 +61,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   late final AnimationController _bounceController;
   late final Animation<double> _bounceAnimation;
 
+  // Fade-in to hide emoji font loading delay
+  late final AnimationController _fadeController;
+
   // Cat rotation driven by page scroll
   double _pageOffset = 0;
 
@@ -77,6 +80,14 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     _bounceAnimation = Tween<double>(begin: -8, end: 8).animate(
       CurvedAnimation(parent: _bounceController, curve: Curves.easeInOut),
     );
+
+    _fadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+    Future.delayed(const Duration(milliseconds: 800), () {
+      if (mounted) _fadeController.forward();
+    });
   }
 
   void _onPageScroll() {
@@ -89,6 +100,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   void dispose() {
     _pageController.dispose();
     _bounceController.dispose();
+    _fadeController.dispose();
     super.dispose();
   }
 
@@ -135,7 +147,10 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     child: Transform.rotate(angle: rotation, child: child),
                   );
                 },
-                child: Text('🐱', style: TextStyle(fontSize: 120)),
+                child: FadeTransition(
+                  opacity: _fadeController,
+                  child: Text('🐱', style: TextStyle(fontSize: 120)),
+                ),
               ),
             ),
             const SizedBox(height: 16),
