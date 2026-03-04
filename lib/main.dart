@@ -49,3 +49,5 @@ class CatinderApp extends StatelessWidget {
     );
   }
 }
+
+// flutter run -d chrome --web-browser-flag="--disable-web-security" --dart-define-from-file=env.json

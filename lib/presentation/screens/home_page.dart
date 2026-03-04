@@ -52,6 +52,7 @@ class _HomePageState extends State<HomePage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        SizedBox(height: 12),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -59,37 +60,41 @@ class _HomePageState extends State<HomePage> {
             Text(' ${_state.likesCount}'),
           ],
         ),
-        Dismissible(
-          key: UniqueKey(),
-          direction: DismissDirection.horizontal,
-          onDismissed: (direction) {
-            if (direction == DismissDirection.startToEnd) {
-              _state.dislike();
-            } else {
-              _state.like();
-            }
-          },
-          child: _state.isLoading || catImage == null
-              ? AspectRatio(
-                  aspectRatio: 3 / 4,
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                    child: Card(
-                      child: Center(
-                        child: _state.error != null
-                            ? Icon(Icons.error_outline,
-                                size: 48, color: Colors.grey)
-                            : SizedBox(
-                                width: 40,
-                                height: 40,
-                                child: CircularProgressIndicator(),
-                              ),
+        Expanded(
+          child: Dismissible(
+            key: UniqueKey(),
+            direction: DismissDirection.horizontal,
+            onDismissed: (direction) {
+              if (direction == DismissDirection.startToEnd) {
+                _state.dislike();
+              } else {
+                _state.like();
+              }
+            },
+            child: Center(
+              child: _state.isLoading || catImage == null
+                  ? AspectRatio(
+                      aspectRatio: 3 / 4,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 8.0),
+                        child: Card(
+                          child: Center(
+                            child: _state.error != null
+                                ? Icon(Icons.error_outline,
+                                    size: 48, color: Colors.grey)
+                                : SizedBox(
+                                    width: 40,
+                                    height: 40,
+                                    child: CircularProgressIndicator(),
+                                  ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                )
-              : CatCard(catImage: catImage),
+                    )
+                  : CatCard(catImage: catImage),
+            ),
+          ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -105,6 +110,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
+        SizedBox(height: 12),
       ],
     );
   }
