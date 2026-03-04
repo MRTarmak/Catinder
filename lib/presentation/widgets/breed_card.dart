@@ -22,11 +22,13 @@ class _BreedCardState extends State<BreedCard> {
   @override
   void initState() {
     super.initState();
+    widget.imageState.addListener(_onStateChanged);
     final imageId = widget.breed.referenceImageId;
     if (imageId != null && imageId.isNotEmpty) {
-      widget.imageState.load(imageId);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.imageState.load(imageId);
+      });
     }
-    widget.imageState.addListener(_onStateChanged);
   }
 
   @override
