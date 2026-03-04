@@ -7,7 +7,7 @@ class BreedsListState extends ChangeNotifier {
   final CatRepository _repository;
 
   BreedsListState({required CatRepository repository})
-      : _repository = repository {
+    : _repository = repository {
     loadBreeds();
   }
 

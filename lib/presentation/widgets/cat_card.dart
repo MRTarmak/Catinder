@@ -10,22 +10,22 @@ class CatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final breedName =
-        catImage.breeds.isNotEmpty ? catImage.breeds.first.name : 'Unknown';
+    final breedName = catImage.breeds.isNotEmpty
+        ? catImage.breeds.first.name
+        : 'Unknown';
 
     final image = Image.network(
       catImage.url,
       fit: BoxFit.cover,
-      errorBuilder: (context, error, stackTrace) => Center(
-        child: Icon(Icons.broken_image, size: 48, color: Colors.grey),
-      ),
+      errorBuilder: (context, error, stackTrace) =>
+          Center(child: Icon(Icons.broken_image, size: 48, color: Colors.grey)),
       loadingBuilder: (context, child, loadingProgress) {
         if (loadingProgress == null) return child;
         return Center(
           child: CircularProgressIndicator(
             value: loadingProgress.expectedTotalBytes != null
                 ? loadingProgress.cumulativeBytesLoaded /
-                    loadingProgress.expectedTotalBytes!
+                      loadingProgress.expectedTotalBytes!
                 : null,
           ),
         );

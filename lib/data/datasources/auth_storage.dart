@@ -7,7 +7,7 @@ class AuthStorage {
   final FlutterSecureStorage _storage;
 
   AuthStorage({FlutterSecureStorage? storage})
-      : _storage = storage ?? const FlutterSecureStorage();
+    : _storage = storage ?? const FlutterSecureStorage();
 
   Future<void> saveUser(String email, String passwordHash) async {
     await _storage.write(key: '$_usersPrefix$email', value: passwordHash);

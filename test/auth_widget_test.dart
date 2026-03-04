@@ -43,13 +43,15 @@ void main() {
       final authState = AuthState(repository: FakeAuthRepository());
       var loggedIn = false;
 
-      await tester.pumpWidget(MaterialApp(
-        home: LoginScreen(
-          authState: authState,
-          onLoginSuccess: () => loggedIn = true,
-          onGoToSignUp: () {},
+      await tester.pumpWidget(
+        MaterialApp(
+          home: LoginScreen(
+            authState: authState,
+            onLoginSuccess: () => loggedIn = true,
+            onGoToSignUp: () {},
+          ),
         ),
-      ));
+      );
 
       // Tap sign in without filling fields
       await tester.tap(find.text('Sign In'));
@@ -64,13 +66,15 @@ void main() {
       final authState = AuthState(repository: FakeAuthRepository());
       var loggedIn = false;
 
-      await tester.pumpWidget(MaterialApp(
-        home: LoginScreen(
-          authState: authState,
-          onLoginSuccess: () => loggedIn = true,
-          onGoToSignUp: () {},
+      await tester.pumpWidget(
+        MaterialApp(
+          home: LoginScreen(
+            authState: authState,
+            onLoginSuccess: () => loggedIn = true,
+            onGoToSignUp: () {},
+          ),
         ),
-      ));
+      );
 
       // Fill in valid credentials
       await tester.enterText(
@@ -93,13 +97,15 @@ void main() {
       final repo = FakeAuthRepository()..nextError = 'User not found';
       final authState = AuthState(repository: repo);
 
-      await tester.pumpWidget(MaterialApp(
-        home: LoginScreen(
-          authState: authState,
-          onLoginSuccess: () {},
-          onGoToSignUp: () {},
+      await tester.pumpWidget(
+        MaterialApp(
+          home: LoginScreen(
+            authState: authState,
+            onLoginSuccess: () {},
+            onGoToSignUp: () {},
+          ),
         ),
-      ));
+      );
 
       await tester.enterText(
         find.widgetWithText(TextFormField, 'Email'),
@@ -118,17 +124,20 @@ void main() {
   });
 
   group('SignUpScreen', () {
-    testWidgets('shows validation error for mismatched passwords',
-        (tester) async {
+    testWidgets('shows validation error for mismatched passwords', (
+      tester,
+    ) async {
       final authState = AuthState(repository: FakeAuthRepository());
 
-      await tester.pumpWidget(MaterialApp(
-        home: SignUpScreen(
-          authState: authState,
-          onSignUpSuccess: () {},
-          onGoToLogin: () {},
+      await tester.pumpWidget(
+        MaterialApp(
+          home: SignUpScreen(
+            authState: authState,
+            onSignUpSuccess: () {},
+            onGoToLogin: () {},
+          ),
         ),
-      ));
+      );
 
       await tester.enterText(
         find.widgetWithText(TextFormField, 'Email'),
@@ -144,20 +153,22 @@ void main() {
       await tester.tap(find.text('Sign Up'));
       await tester.pumpAndSettle();
 
-      expect(find.textContaining('не совпадают'), findsOneWidget);
+      expect(find.textContaining('Passwords do not match'), findsOneWidget);
     });
 
     testWidgets('successful signup calls onSignUpSuccess', (tester) async {
       final authState = AuthState(repository: FakeAuthRepository());
       var signedUp = false;
 
-      await tester.pumpWidget(MaterialApp(
-        home: SignUpScreen(
-          authState: authState,
-          onSignUpSuccess: () => signedUp = true,
-          onGoToLogin: () {},
+      await tester.pumpWidget(
+        MaterialApp(
+          home: SignUpScreen(
+            authState: authState,
+            onSignUpSuccess: () => signedUp = true,
+            onGoToLogin: () {},
+          ),
         ),
-      ));
+      );
 
       await tester.enterText(
         find.widgetWithText(TextFormField, 'Email'),

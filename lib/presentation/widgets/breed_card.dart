@@ -8,11 +8,7 @@ class BreedCard extends StatefulWidget {
   final Breed breed;
   final BreedImageState imageState;
 
-  const BreedCard({
-    super.key,
-    required this.breed,
-    required this.imageState,
-  });
+  const BreedCard({super.key, required this.breed, required this.imageState});
 
   @override
   State<BreedCard> createState() => _BreedCardState();
@@ -77,7 +73,7 @@ class _BreedCardState extends State<BreedCard> {
               child: CircularProgressIndicator(
                 value: loadingProgress.expectedTotalBytes != null
                     ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes!
+                          loadingProgress.expectedTotalBytes!
                     : null,
               ),
             );

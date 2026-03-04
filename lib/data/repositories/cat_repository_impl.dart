@@ -8,7 +8,7 @@ class CatRepositoryImpl implements CatRepository {
   final CatApiDatasource _datasource;
 
   CatRepositoryImpl({required CatApiDatasource datasource})
-      : _datasource = datasource;
+    : _datasource = datasource;
 
   @override
   Future<CatImage> getRandomCatImage() async {

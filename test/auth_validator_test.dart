@@ -48,17 +48,11 @@ void main() {
 
   group('AuthValidator.validatePasswordConfirm', () {
     test('returns error when passwords do not match', () {
-      expect(
-        AuthValidator.validatePasswordConfirm('abc', '123'),
-        isNotNull,
-      );
+      expect(AuthValidator.validatePasswordConfirm('abc', '123'), isNotNull);
     });
 
     test('returns null when passwords match', () {
-      expect(
-        AuthValidator.validatePasswordConfirm('secret', 'secret'),
-        isNull,
-      );
+      expect(AuthValidator.validatePasswordConfirm('secret', 'secret'), isNull);
     });
   });
 }

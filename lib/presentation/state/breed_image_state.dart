@@ -7,7 +7,7 @@ class BreedImageState extends ChangeNotifier {
   final CatRepository _repository;
 
   BreedImageState({required CatRepository repository})
-      : _repository = repository;
+    : _repository = repository;
 
   final Map<String, CatImage> _cache = {};
   final Map<String, Object> _errors = {};

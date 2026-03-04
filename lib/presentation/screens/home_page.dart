@@ -77,12 +77,17 @@ class _HomePageState extends State<HomePage> {
                       aspectRatio: 3 / 4,
                       child: Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 8.0),
+                          horizontal: 16.0,
+                          vertical: 8.0,
+                        ),
                         child: Card(
                           child: Center(
                             child: _state.error != null
-                                ? Icon(Icons.error_outline,
-                                    size: 48, color: Colors.grey)
+                                ? Icon(
+                                    Icons.error_outline,
+                                    size: 48,
+                                    color: Colors.grey,
+                                  )
                                 : SizedBox(
                                     width: 40,
                                     height: 40,

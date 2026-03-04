@@ -5,9 +5,5 @@ class CatImage {
   final String url;
   final List<Breed> breeds;
 
-  const CatImage({
-    required this.id,
-    required this.url,
-    this.breeds = const [],
-  });
+  const CatImage({required this.id, required this.url, this.breeds = const []});
 }

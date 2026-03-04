@@ -9,22 +9,35 @@ class FakeSecureStoragePlatform extends FlutterSecureStoragePlatform {
   final Map<String, String> _store = {};
 
   @override
-  Future<void> write({required String key, required String value, Map<String, String>? options}) async {
+  Future<void> write({
+    required String key,
+    required String value,
+    Map<String, String>? options,
+  }) async {
     _store[key] = value;
   }
 
   @override
-  Future<String?> read({required String key, Map<String, String>? options}) async {
+  Future<String?> read({
+    required String key,
+    Map<String, String>? options,
+  }) async {
     return _store[key];
   }
 
   @override
-  Future<void> delete({required String key, Map<String, String>? options}) async {
+  Future<void> delete({
+    required String key,
+    Map<String, String>? options,
+  }) async {
     _store.remove(key);
   }
 
   @override
-  Future<bool> containsKey({required String key, Map<String, String>? options}) async {
+  Future<bool> containsKey({
+    required String key,
+    Map<String, String>? options,
+  }) async {
     return _store.containsKey(key);
   }
 

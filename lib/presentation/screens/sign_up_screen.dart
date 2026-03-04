@@ -102,11 +102,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       prefixIcon: const Icon(Icons.lock_outline),
                       border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
-                        icon: Icon(_obscurePassword
-                            ? Icons.visibility_off
-                            : Icons.visibility),
-                        onPressed: () =>
-                            setState(() => _obscurePassword = !_obscurePassword),
+                        icon: Icon(
+                          _obscurePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                        onPressed: () => setState(
+                          () => _obscurePassword = !_obscurePassword,
+                        ),
                       ),
                     ),
                     obscureText: _obscurePassword,
@@ -121,9 +124,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       prefixIcon: const Icon(Icons.lock_outline),
                       border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
-                        icon: Icon(_obscureConfirm
-                            ? Icons.visibility_off
-                            : Icons.visibility),
+                        icon: Icon(
+                          _obscureConfirm
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
                         onPressed: () =>
                             setState(() => _obscureConfirm = !_obscureConfirm),
                       ),
@@ -131,7 +136,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     obscureText: _obscureConfirm,
                     textInputAction: TextInputAction.done,
                     validator: (v) => AuthValidator.validatePasswordConfirm(
-                        v, _passwordController.text),
+                      v,
+                      _passwordController.text,
+                    ),
                     onFieldSubmitted: (_) => _submit(),
                   ),
                   if (state.error != null) ...[

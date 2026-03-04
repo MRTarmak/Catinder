@@ -15,17 +15,21 @@ class CatApiDatasource {
   final http.Client _client;
   final Duration _timeout;
 
-  CatApiDatasource({http.Client? client, Duration timeout = const Duration(seconds: 30)})
-      : _client = client ?? http.Client(),
-        _timeout = timeout;
+  CatApiDatasource({
+    http.Client? client,
+    Duration timeout = const Duration(seconds: 30),
+  }) : _client = client ?? http.Client(),
+       _timeout = timeout;
 
   Future<String> fetchRandomImageId() async {
-    final response = await _client.get(
-      Uri.https('api.thecatapi.com', '/v1/images/search', {
-        'has_breeds': '1',
-      }),
-      headers: _headers,
-    ).timeout(_timeout);
+    final response = await _client
+        .get(
+          Uri.https('api.thecatapi.com', '/v1/images/search', {
+            'has_breeds': '1',
+          }),
+          headers: _headers,
+        )
+        .timeout(_timeout);
 
     if (response.statusCode != 200) {
       throw Exception(
@@ -43,10 +47,12 @@ class CatApiDatasource {
   }
 
   Future<CatImage> fetchImageData(String imageId) async {
-    final response = await _client.get(
-      Uri.https('api.thecatapi.com', '/v1/images/$imageId'),
-      headers: _headers,
-    ).timeout(_timeout);
+    final response = await _client
+        .get(
+          Uri.https('api.thecatapi.com', '/v1/images/$imageId'),
+          headers: _headers,
+        )
+        .timeout(_timeout);
 
     if (response.statusCode != 200) {
       throw Exception(
@@ -61,10 +67,9 @@ class CatApiDatasource {
   }
 
   Future<List<Breed>> fetchAllBreeds() async {
-    final response = await _client.get(
-      Uri.https('api.thecatapi.com', '/v1/breeds'),
-      headers: _headers,
-    ).timeout(_timeout);
+    final response = await _client
+        .get(Uri.https('api.thecatapi.com', '/v1/breeds'), headers: _headers)
+        .timeout(_timeout);
 
     if (response.statusCode != 200) {
       throw Exception(

@@ -31,14 +31,16 @@ void main() async {
   final breedsListState = BreedsListState(repository: catRepository);
   final breedImageState = BreedImageState(repository: catRepository);
 
-  runApp(CatinderApp(
-    authState: authState,
-    homeState: homeState,
-    breedsListState: breedsListState,
-    breedImageState: breedImageState,
-    showOnboarding: showOnboarding,
-    isLoggedIn: isLoggedIn,
-  ));
+  runApp(
+    CatinderApp(
+      authState: authState,
+      homeState: homeState,
+      breedsListState: breedsListState,
+      breedImageState: breedImageState,
+      showOnboarding: showOnboarding,
+      isLoggedIn: isLoggedIn,
+    ),
+  );
 }
 
 enum _AppScreen { onboarding, login, signUp, main }
@@ -89,29 +91,29 @@ class _CatinderAppState extends State<CatinderApp> {
       ),
       home: switch (_screen) {
         _AppScreen.onboarding => OnboardingScreen(
-            onComplete: () => setState(() => _screen = _AppScreen.login),
-          ),
+          onComplete: () => setState(() => _screen = _AppScreen.login),
+        ),
         _AppScreen.login => LoginScreen(
-            authState: widget.authState,
-            onLoginSuccess: () => setState(() => _screen = _AppScreen.main),
-            onGoToSignUp: () => setState(() {
-              widget.authState.clearError();
-              _screen = _AppScreen.signUp;
-            }),
-          ),
+          authState: widget.authState,
+          onLoginSuccess: () => setState(() => _screen = _AppScreen.main),
+          onGoToSignUp: () => setState(() {
+            widget.authState.clearError();
+            _screen = _AppScreen.signUp;
+          }),
+        ),
         _AppScreen.signUp => SignUpScreen(
-            authState: widget.authState,
-            onSignUpSuccess: () => setState(() => _screen = _AppScreen.main),
-            onGoToLogin: () => setState(() {
-              widget.authState.clearError();
-              _screen = _AppScreen.login;
-            }),
-          ),
+          authState: widget.authState,
+          onSignUpSuccess: () => setState(() => _screen = _AppScreen.main),
+          onGoToLogin: () => setState(() {
+            widget.authState.clearError();
+            _screen = _AppScreen.login;
+          }),
+        ),
         _AppScreen.main => IndexedStackScreen(
-            homeState: widget.homeState,
-            breedsListState: widget.breedsListState,
-            breedImageState: widget.breedImageState,
-          ),
+          homeState: widget.homeState,
+          breedsListState: widget.breedsListState,
+          breedImageState: widget.breedImageState,
+        ),
       },
     );
   }
