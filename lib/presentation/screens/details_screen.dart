@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../domain/models/cat_image.dart';
+
 class DetailsScreen extends StatelessWidget {
   final Image? image;
   final String breedName;
@@ -19,13 +21,30 @@ class DetailsScreen extends StatelessWidget {
     this.temperament,
   });
 
+  factory DetailsScreen.fromCatImage({
+    Key? key,
+    required CatImage catImage,
+    Image? image,
+  }) {
+    final breed = catImage.breeds.isNotEmpty ? catImage.breeds.first : null;
+    return DetailsScreen(
+      key: key,
+      image: image,
+      breedName: breed?.name ?? 'Unknown',
+      description: breed?.description ?? '',
+      weight: breed?.weight,
+      lifespan: breed?.lifeSpan,
+      temperament: breed?.temperament,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Center(
           child: Text(
-            "Catinder",
+            'Catinder',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
@@ -76,19 +95,19 @@ class DetailsScreen extends StatelessWidget {
                           SizedBox(height: 12),
                           if (weight != null)
                             Text(
-                              "Weight: $weight kg",
+                              'Weight: $weight kg',
                               textAlign: TextAlign.center,
                               style: TextStyle(fontSize: 16),
                             ),
                           if (lifespan != null)
                             Text(
-                              "Lifespan: $lifespan years",
+                              'Lifespan: $lifespan years',
                               textAlign: TextAlign.center,
                               style: TextStyle(fontSize: 16),
                             ),
                           if (temperament != null)
                             Text(
-                              "Temperament: $temperament",
+                              'Temperament: $temperament',
                               textAlign: TextAlign.center,
                               style: TextStyle(fontSize: 16),
                             ),
